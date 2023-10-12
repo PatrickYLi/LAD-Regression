@@ -3,6 +3,7 @@ import pandas as pd
 from sklearn.metrics import r2_score
 from skbonus.linear_model import LADRegression
 from joblib import Parallel, delayed
+from tqdm import tqdm
 
 # Read csv file
 conc = np.genfromtxt("Conc.txt")
@@ -39,7 +40,7 @@ def compute(i):
         return r2, slope
 
 # Use joblib to parallelize the loop
-results = Parallel(n_jobs=-1)(delayed(compute)(i) for i in range(abso.shape[0])) # n_jobs=-1， use all threads
+results = Parallel(n_jobs=-1)(delayed(compute)(i) for i in tqdm(range(abso.shape[0]))) # n_jobs=-1， use all threads
 
 # Unpack results
 r2_values, slopes = zip(*results)
